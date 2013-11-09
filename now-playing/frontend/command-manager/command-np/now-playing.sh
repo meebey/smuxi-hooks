@@ -14,7 +14,8 @@
 #
 #  0. You just DO WHAT THE FUCK YOU WANT TO.
 
-eval $(dbus-send --session --print-reply --dest=org.bansheeproject.Banshee /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:org.mpris.MediaPlayer2.Player string:Metadata | awk '
+if [ ! -z "$(pgrep -u $USER --exact banshee)" ]; then
+    eval $(dbus-send --session --print-reply --dest=org.bansheeproject.Banshee /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:org.mpris.MediaPlayer2.Player string:Metadata | awk '
   /string  *"xesam:artist/{
     while (1) {
       getline line
@@ -36,5 +37,23 @@ eval $(dbus-send --session --print-reply --dest=org.bansheeproject.Banshee /org/
     }
   }
 ')
+elif [ ! -z "$(pgrep -u $USER --exact chrome)" ]; then
+    TITLE=$(strings -e l $HOME/.config/google-chrome/Default/Current\ Session | grep " - YouTube" | tail -n 1)
+    TITLE=${TITLE% - YouTube}
+    TITLE="$TITLE [YouTube]"
+fi
+
+if [ -z "$ARTIST" ] && [ -z "$TITLE" ]; then
+    exit 0
+fi
+
+if [ -z "$ARTIST" ]; then
+    echo "ProtocolManager.Command /me is now playing: $TITLE"
+    exit 0
+fi
+
+if [ -z "$TITLE" ]; then
+    exit 0
+fi
 
 echo "ProtocolManager.Command /me is now playing: $ARTIST - $TITLE"
