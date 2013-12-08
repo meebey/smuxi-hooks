@@ -14,8 +14,19 @@
 #
 #  0. You just DO WHAT THE FUCK YOU WANT TO.
 
+QUERY_MPRIS2=0
 if [ ! -z "$(pgrep -u $USER --exact banshee)" ]; then
-    eval $(dbus-send --session --print-reply --dest=org.bansheeproject.Banshee /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:org.mpris.MediaPlayer2.Player string:Metadata | awk '
+    QUERY_MPRIS2=1
+    DBUS_DEST=org.bansheeproject.Banshee
+fi
+
+STATUS=
+if [ $QUERY_MPRIS2 = 1 ]; then
+    STATUS=$(dbus-send --session --print-reply --dest=$DBUS_DEST /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:org.mpris.MediaPlayer2.Player string:PlaybackStatus | egrep 'string "(.*)"' | cut -d '"' -f 2)
+fi
+
+if [ $QUERY_MPRIS2 = 1 ]  && [ $STATUS = "Playing" ]; then
+    eval $(dbus-send --session --print-reply --dest=$DBUS_DEST /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:org.mpris.MediaPlayer2.Player string:Metadata | awk '
   /string  *"xesam:artist/{
     while (1) {
       getline line
