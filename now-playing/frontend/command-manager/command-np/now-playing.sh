@@ -50,8 +50,10 @@ if [ $QUERY_MPRIS2 = 1 ]  && [ $STATUS = "Playing" ]; then
 ')
 elif [ ! -z "$(pgrep -u $USER --exact chrome)" ]; then
     TITLE=$(strings -e l $HOME/.config/google-chrome/Default/Current\ Session | grep " - YouTube" | tail -n 1)
-    TITLE=${TITLE% - YouTube}
-    TITLE="$TITLE [YouTube]"
+    if [ ! -z "$TITLE" ]; then
+        TITLE=${TITLE% - YouTube}
+        TITLE="$TITLE [YouTube]"
+    fi
 fi
 
 if [ -z "$ARTIST" ] && [ -z "$TITLE" ]; then
