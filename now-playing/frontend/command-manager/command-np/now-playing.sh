@@ -48,8 +48,8 @@ if [ $QUERY_MPRIS2 = 1 ]  && [ $STATUS = "Playing" ]; then
     }
   }
 ')
-elif [[ ! -z "$(pgrep -u $USER --exact chrome)" || ! -z "$(pgrep -u $USER --exact chromium)" ]]; then
-    if [[ $(ps $(pgrep -u $USER --exact chrome | head -1) | egrep  -z chromium ) || $( pgrep -u $USER --exact chromium) ]];
+elif [ ! -z "$(pgrep -u $USER --exact chrome)" ] || [ ! -z "$(pgrep -u $USER --exact chromium)" ]; then
+    if [ ! -z "$(ps $(pgrep -u $USER --exact chrome | head -1) | egrep -z chromium )" ] || [ ! -z "$(pgrep -u $USER --exact chromium)" ];
     then
     	TITLE=$(strings -e l $HOME/.config/chromium/Default/Current\ Session | grep " - YouTube" | tail -n 1)
     else 
