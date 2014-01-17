@@ -15,14 +15,24 @@
 #  0. You just DO WHAT THE FUCK YOU WANT TO.
 
 QUERY_MPRIS2=0
+DBUS_DESTS=
 if [ ! -z "$(pgrep -u $USER --exact banshee)" ]; then
     QUERY_MPRIS2=1
-    DBUS_DEST=org.bansheeproject.Banshee
+    DBUS_DESTS="org.bansheeproject.Banshee"
+fi
+if [ ! -z "$(pgrep -u $USER --exact vlc)" ]; then
+    QUERY_MPRIS2=1
+    DBUS_DESTS="$DBUS_DESTS org.mpris.MediaPlayer2.vlc"
 fi
 
 STATUS=
 if [ $QUERY_MPRIS2 = 1 ]; then
-    STATUS=$(dbus-send --session --print-reply --dest=$DBUS_DEST /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:org.mpris.MediaPlayer2.Player string:PlaybackStatus | egrep 'string "(.*)"' | cut -d '"' -f 2)
+    for DBUS_DEST in $DBUS_DESTS; do
+        STATUS=$(dbus-send --session --print-reply --dest=$DBUS_DEST /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:org.mpris.MediaPlayer2.Player string:PlaybackStatus | egrep 'string "(.*)"' | cut -d '"' -f 2)
+        if [ "$STATUS" = "Playing" ]; then
+            break
+        fi
+    done
 fi
 
 if [ $QUERY_MPRIS2 = 1 ]  && [ $STATUS = "Playing" ]; then
