@@ -24,6 +24,22 @@ if [ ! -z "$(pgrep -u $USER --exact vlc)" ]; then
     QUERY_MPRIS2=1
     DBUS_DESTS="$DBUS_DESTS org.mpris.MediaPlayer2.vlc"
 fi
+if [ ! -z "$(pgrep -u $USER -x tomahawk)" ]; then
+    QUERY_MPRIS2=1
+    DBUS_DESTS="$DBUS_DESTS org.mpris.MediaPlayer2.tomahawk"
+fi
+if [ ! -z "$(pgrep -u $USER -x amarok)" ]; then
+    QUERY_MPRIS2=1
+    DBUS_DESTS="$DBUS_DESTS org.mpris.MediaPlayer2.amarok"
+fi
+if [ ! -z "$(pgrep -u $USER -x rhythmbox)" ]; then
+    QUERY_MPRIS2=1
+    DBUS_DESTS="$DBUS_DESTS org.mpris.MediaPlayer2.rhythmbox"
+fi
+if [ ! -z "$(pgrep -u $USER -x clementine)" ]; then
+    QUERY_MPRIS2=1
+    DBUS_DESTS="$DBUS_DESTS org.mpris.clementine"
+fi
 
 STATUS=
 if [ $QUERY_MPRIS2 = 1 ]; then
