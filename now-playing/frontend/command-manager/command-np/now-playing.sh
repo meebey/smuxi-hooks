@@ -16,11 +16,11 @@
 
 QUERY_MPRIS2=0
 DBUS_DESTS=
-if [ ! -z "$(pgrep -u $USER --exact banshee)" ]; then
+if [ ! -z "$(pgrep -u $USER -x banshee)" ]; then
     QUERY_MPRIS2=1
     DBUS_DESTS="org.bansheeproject.Banshee"
 fi
-if [ ! -z "$(pgrep -u $USER --exact vlc)" ]; then
+if [ ! -z "$(pgrep -u $USER -x vlc)" ]; then
     QUERY_MPRIS2=1
     DBUS_DESTS="$DBUS_DESTS org.mpris.MediaPlayer2.vlc"
 fi
@@ -58,8 +58,8 @@ if [ $QUERY_MPRIS2 = 1 ]  && [ $STATUS = "Playing" ]; then
     }
   }
 ')
-elif [ ! -z "$(pgrep -u $USER --exact chrome)" ] || [ ! -z "$(pgrep -u $USER --exact chromium)" ]; then
-    if [ ! -z "$(ps $(pgrep -u $USER --exact chrome | head -1) | egrep -z chromium )" ] || [ ! -z "$(pgrep -u $USER --exact chromium)" ];
+elif [ ! -z "$(pgrep -u $USER -x chrome)" ] || [ ! -z "$(pgrep -u $USER -x chromium)" ]; then
+    if [ ! -z "$(ps $(pgrep -u $USER -x chrome | head -1) | egrep -z chromium )" ] || [ ! -z "$(pgrep -u $USER -x chromium)" ];
     then
     	TITLE=$(strings -e l $HOME/.config/chromium/Default/Current\ Session | grep " - YouTube" | tail -n 1)
     else 
