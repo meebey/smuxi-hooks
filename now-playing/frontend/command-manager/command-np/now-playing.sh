@@ -40,7 +40,9 @@ if [ ! -z "$(pgrep -u $USER -x clementine)" ]; then
     QUERY_MPRIS2=1
     DBUS_DESTS="$DBUS_DESTS org.mpris.clementine"
 fi
-
+if [ ! -z "$(pgrep -u $USER -x midori)" ]; then
+    QUERY_MIDORI=1
+fi
 STATUS=
 if [ $QUERY_MPRIS2 = 1 ]; then
     for DBUS_DEST in $DBUS_DESTS; do
@@ -74,6 +76,31 @@ if [ $QUERY_MPRIS2 = 1 ]  && [ $STATUS = "Playing" ]; then
     }
   }
 ')
+elif [ $QUERY_MIDORI = 1 ]; then
+    eval $(dbus-send --session --print-reply --dest=org.midori.mediaHerald /org/midori/mediaHerald org.freedesktop.DBus.Properties.GetAll string:"org.midori.mediaHerald" | awk '
+    /string  *"VideoTitle/{
+        while (1) {
+            getline line
+            if (line ~ /string "/)
+                sub(/.*string /, "TITLE=", line)
+                print line
+                break
+            }
+        }
+        /string  *"VideoUri/{
+        while (1) {
+            getline line
+            if (line ~ /string "/)
+                sub(/.*string /, "URI=", line)
+                print line
+                break
+            }
+        }
+    ')
+    if [ ! -z "$TITLE" ] && [ ! -z "$URI" ]; then
+        echo "ProtocolManager.Command /me is now playing: $TITLE the uri is: $URI in Midori"
+        exit 0
+    fi
 elif [ ! -z "$(pgrep -u $USER -x chrome)" ] || [ ! -z "$(pgrep -u $USER -x chromium)" ]; then
     if [ ! -z "$(ps $(pgrep -u $USER -x chrome | head -1) | egrep -z chromium )" ] || [ ! -z "$(pgrep -u $USER -x chromium)" ];
     then
