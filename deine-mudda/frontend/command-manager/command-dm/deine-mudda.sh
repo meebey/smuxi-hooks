@@ -44,6 +44,7 @@ DM[16]="Deine Mudda spielt Counter-Strike mit einem Lenkrad."
 DM[17]="Hab letztens 14 Tage Urlaub auf deiner Mutter gemacht und immer noch nicht alles gesehen!"
 DM[18]="Deine Mutter steht nackt vor Kik und schreit: “Ich bin billiger!“"
 DM[19]="Deine Mutter ist so doof, die stolpert über ein kabelloses Telefon."
+DM[20]="Deine Mutter ist ein Funkloch."
 
 IDX=$(shuf -i 0-${#DM[@]} -n 1)
 echo "ProtocolManager.Command /say ${DM[$IDX]}"
