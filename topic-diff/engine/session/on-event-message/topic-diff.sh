@@ -37,6 +37,6 @@ TOPIC_FILE="${SMUXI_PROTOCOL_MANAGER_PROTOCOL}_${SMUXI_PROTOCOL_MANAGER_NETWORK}
 NEW_TOPIC="${BASH_REMATCH[1]}"
 OLD_TOPIC="$(cat $TOPIC_FILE)"
 echo "$NEW_TOPIC" > "$TOPIC_FILE"
-WDIFF=$(wdiff --start-delete='{-' --end-delete='}' --start-insert='{+' --end-insert='}' <(echo $OLD_TOPIC) <(echo $NEW_TOPIC))
+WDIFF=$(wdiff --start-delete='{-' --end-delete='}' --start-insert='{+' --end-insert='}' <(echo "$OLD_TOPIC") <(echo "$NEW_TOPIC"))
 
 echo "Session.Command /echo $WDIFF"
