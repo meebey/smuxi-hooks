@@ -47,6 +47,7 @@ DM[19]="Deine Mutter ist so doof, die stolpert über ein kabelloses Telefon."
 DM[20]="Deine Mutter ist ein Funkloch."
 DM[21]="Deine Mutter dreht Quadrate bei Tetris."
 DM[22]="Deine Mutter stürzt öfter ab als Windows."
+DM[23]="Deine Mutter arbeitet bei IKEA als unterste Schublade."
 
 IDX=$(shuf -i 0-${#DM[@]} -n 1)
 echo "ProtocolManager.Command /say ${DM[$IDX]}"
