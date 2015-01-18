@@ -44,6 +44,10 @@ fi
 if [ ! -z "$(pgrep -u $USER -x midori)" ]; then
     QUERY_MIDORI=1
 fi
+if [ ! -z "$(pgrep -u $USER -x spotify)" ]; then
+    QUERY_MPRIS2=1
+    DBUS_DESTS="$DBUS_DESTS org.mpris.MediaPlayer2.spotify"
+fi
 STATUS=
 if [ $QUERY_MPRIS2 = 1 ]; then
     for DBUS_DEST in $DBUS_DESTS; do
