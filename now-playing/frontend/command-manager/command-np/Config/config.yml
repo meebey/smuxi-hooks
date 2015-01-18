@@ -1,0 +1,6 @@
+## SNP YAML config-file
+
+player: "mpd"
+mpd_host: "localhost"
+mpd_port: 6600
+format: "MPD: │ {b}{artist}{b} │ {b}{title}{b} │ {b}{album}{b} │"
