@@ -15,6 +15,7 @@
 #  0. You just DO WHAT THE FUCK YOU WANT TO.
 
 QUERY_MPRIS2=0
+QUERY_MIDORI=0
 DBUS_DESTS=
 if [ ! -z "$(pgrep -u $USER -x banshee)" ]; then
     QUERY_MPRIS2=1
