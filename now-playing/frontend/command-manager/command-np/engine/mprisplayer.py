@@ -44,6 +44,7 @@ class MprisPlayer(object):
 
         output = artist + ' - '+ title
         print(u"ProtocolManager.Command /me is playing: {}".format(output).encode("utf-8"))
+        sys.exit()
 
     def GetStatus(self):
         player_stat = self.__iface.Get('org.mpris.MediaPlayer2.Player', 'PlaybackStatus')

@@ -15,6 +15,7 @@
 # 0. You just DO WHAT THE FUCK YOU WANT TO.
 
 from mprisplayer import MprisPlayer
+from midori import Midori
 
 #BEFORE ADD ANY PLAYER TO 'MPLAS' TUPLE BE SURE PLEASE THAT IT SUPPORTS MPRIS2
 MPLAS = ('vlc', 

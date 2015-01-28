@@ -19,14 +19,19 @@ import engine
 import subprocess
 import getpass
 
-def shellquote(s):
-    return "'" + s.replace("'", "'\\''") + "'"
-
 USER = getpass.getuser()
+player_pid = False
 
 for mpla in engine.MPLAS:
-    process = subprocess.Popen('pgrep %s -u %s' %(shellquote(mpla), shellquote(USER)), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    player_pid, err = process.communicate()
+    try:
+        player_pid = subprocess.check_output(['pgrep', mpla, '-u', USER])
+    except subprocess.CalledProcessError:
+        player_pid = False
     if player_pid and engine.MprisPlayer(mpla).GetStatus():
         engine.MprisPlayer(mpla).GetTrackInfos()
-        break
+
+try:
+    player_pid = subprocess.check_output(['pgrep', 'midori', '-u', USER])
+    engine.Midori.GetTrackInfos()
+except subprocess.CalledProcessError:
+    player_pid = False
