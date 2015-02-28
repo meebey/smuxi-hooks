@@ -29,9 +29,14 @@ for mpla in engine.MPLAS:
         player_pid = False
     if player_pid and engine.MprisPlayer(mpla).GetStatus():
         engine.MprisPlayer(mpla).GetTrackInfos()
+        raise SystemExit(0)
 
 try:
     player_pid = subprocess.check_output(['pgrep', 'midori', '-u', USER])
-    engine.Midori.GetTrackInfos()
+    if engine.Midori.GetTrackInfos():
+        raise SystemExit(0)
+    raise SystemExit(1)
 except subprocess.CalledProcessError:
-    player_pid = False
+    pass
+
+engine.Mpd.GetTrackInfos()
