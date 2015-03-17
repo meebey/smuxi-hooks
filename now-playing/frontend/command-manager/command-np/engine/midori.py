@@ -20,8 +20,8 @@ import sys
 try:
     import dbus
 except ImportError:
-    print (u"ProtocolManager.Command /echo you need to install python-dbus :)")
-    sys.exit()
+    print (u"ProtocolManager.Command /echo you need to install python-dbus")
+    raise SystemExit(1)
 
 class Midori(object):
 
@@ -31,14 +31,18 @@ class Midori(object):
         try:
             player = session_bus.get_object('org.midori.mediaHerald','/org/midori/mediaHerald')
             self.__iface = dbus.Interface(player, dbus_interface='org.freedesktop.DBus.Properties')
-        except:
-            print (u"ProtocolManager.Command /echo you need to run midori extension 'Webmedia now-playing' :)")
-            sys.exit()
+            self.__get_iface = True
+        except dbus.exceptions.DBusException:
+            print (u"ProtocolManager.Command /echo you need to run midori extension 'Webmedia now-playing'")
+            self.__get_iface = False
+            
 
     @classmethod
     def GetTrackInfos(cls):
         midori = Midori()
-        properties = midori.__iface.GetAll('org.midori.mediaHerald')
-        output =  properties.get("VideoTitle")[1:] + ' - '+ properties.get("VideoUri")[0:]
-        print(u"ProtocolManager.Command /me is playing: {}".format(output).encode("utf-8"))
-
+        if midori.__get_iface:
+            properties = midori.__iface.GetAll('org.midori.mediaHerald')
+            output =  properties.get("VideoTitle")[1:] + ' - '+ properties.get("VideoUri")[0:]
+            print(u"ProtocolManager.Command /me is playing: {}".format(output).encode("utf-8"))
+            return True
+        return False

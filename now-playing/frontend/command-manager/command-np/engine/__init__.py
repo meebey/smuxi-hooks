@@ -16,6 +16,7 @@
 
 from mprisplayer import MprisPlayer
 from midori import Midori
+from mpd import Mpd
 
 #BEFORE ADD ANY PLAYER TO 'MPLAS' TUPLE BE SURE PLEASE THAT IT SUPPORTS MPRIS2
 MPLAS = ('vlc', 

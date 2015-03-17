@@ -14,13 +14,11 @@
 #
 # 0. You just DO WHAT THE FUCK YOU WANT TO.
 
-import sys
-
 try:
     import dbus
 except ImportError:
-    print (u"ProtocolManager.Command /echo you need to install python-dbus :)")
-    sys.exit()
+    print (u"ProtocolManager.Command /echo you need to install python-dbus")
+    raise SystemExit(1)
 
 class MprisPlayer(object):
 
@@ -44,7 +42,6 @@ class MprisPlayer(object):
 
         output = artist + ' - '+ title
         print(u"ProtocolManager.Command /me is playing: {}".format(output).encode("utf-8"))
-        sys.exit()
 
     def GetStatus(self):
         player_stat = self.__iface.Get('org.mpris.MediaPlayer2.Player', 'PlaybackStatus')
